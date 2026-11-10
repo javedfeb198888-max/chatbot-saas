@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToClient;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,16 @@ class Bot extends Model
             'allowed_domains' => 'array',
             'is_active' => 'boolean',
         ];
+    }
+
+    /** The script tag a client pastes into their website. */
+    protected function embedCode(): Attribute
+    {
+        return Attribute::get(fn () => sprintf(
+            '<script async src="%s/widget.js" data-bot="%s"></script>',
+            rtrim(config('app.url'), '/'),
+            $this->public_key,
+        ));
     }
 
     public function sources(): HasMany
