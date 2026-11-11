@@ -18,6 +18,20 @@ class Client extends Model
         return $this->status === 'active';
     }
 
+    /** Visitor messages answered so far in the current calendar month. */
+    public function messagesThisMonth(): int
+    {
+        return (int) UsageDaily::withoutGlobalScopes()
+            ->where('client_id', $this->id)
+            ->where('day', '>=', now()->startOfMonth()->toDateString())
+            ->sum('messages');
+    }
+
+    public function hasReachedMessageLimit(): bool
+    {
+        return $this->messagesThisMonth() >= $this->monthly_message_limit;
+    }
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

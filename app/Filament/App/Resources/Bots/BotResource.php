@@ -20,6 +20,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 /**
  * The Bot model is client-scoped, so this resource only ever lists the
@@ -30,6 +31,12 @@ class BotResource extends Resource
     protected static ?string $model = Bot::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
+
+    protected static ?string $navigationLabel = 'Bot';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -69,6 +76,31 @@ class BotResource extends Resource
                             ->maxLength(5000),
                     ]),
 
+                Section::make('Booking calendar')
+                    ->description('Connect your Google or Outlook calendar inside Cal.com, then enter your Cal.com details here. Leave empty to turn booking off.')
+                    ->columns(3)
+                    // Saved to calendar_connections only when a username is entered.
+                    ->relationship('calendarConnection', condition: fn (?array $state) => filled($state['cal_username'] ?? null))
+                    ->schema([
+                        TextInput::make('cal_username')
+                            ->label('Cal.com username')
+                            ->placeholder('your-name')
+                            ->helperText('The part after cal.com/ in your booking link.')
+                            ->maxLength(255),
+                        TextInput::make('event_type_slug')
+                            ->label('Event type')
+                            ->placeholder('30min')
+                            ->helperText('The last part of the booking link.')
+                            ->requiredWith('cal_username')
+                            ->maxLength(255),
+                        Select::make('timezone')
+                            ->label('Your time zone')
+                            ->options(fn () => array_combine(timezone_identifiers_list(), timezone_identifiers_list()))
+                            ->default('UTC')
+                            ->searchable()
+                            ->requiredWith('cal_username'),
+                    ]),
+
                 Section::make('Widget')
                     ->columns(2)
                     ->schema([
@@ -82,7 +114,7 @@ class BotResource extends Resource
                         TagsInput::make('allowed_domains')
                             ->label('Websites where the widget may run')
                             ->placeholder('example.com')
-                            ->helperText('Type a domain and press Enter. The widget is blocked on every other site.')
+                            ->helperText('Type a domain and press Enter. Leave empty to allow any website; once you add one, every other site is blocked.')
                             ->columnSpanFull(),
                         Textarea::make('embed_code')
                             ->label('Widget code')

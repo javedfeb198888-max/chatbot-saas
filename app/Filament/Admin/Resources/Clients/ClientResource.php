@@ -98,10 +98,9 @@ class ClientResource extends Resource
                 TextColumn::make('users_count')
                     ->counts('users')
                     ->label('Users'),
-                TextColumn::make('monthly_message_limit')
-                    ->label('Monthly limit')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('messages_this_month')
+                    ->label('Messages this month')
+                    ->state(fn (Client $record) => number_format($record->messagesThisMonth()).' of '.number_format($record->monthly_message_limit)),
                 TextColumn::make('created_at')
                     ->date()
                     ->sortable(),

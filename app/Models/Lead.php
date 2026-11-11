@@ -12,6 +12,11 @@ class Lead extends Model
 {
     use BelongsToClient;
 
+    public function conversation(): BelongsTo
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+
     public function bot(): BelongsTo
     {
         return $this->belongsTo(Bot::class);

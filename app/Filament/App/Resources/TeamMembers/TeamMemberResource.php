@@ -16,6 +16,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 /**
  * The User model is NOT client-scoped (login needs to find any user),
@@ -28,6 +29,10 @@ class TeamMemberResource extends Resource
     protected static ?string $slug = 'team';
 
     protected static ?string $modelLabel = 'team member';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationLabel = 'Team';
 

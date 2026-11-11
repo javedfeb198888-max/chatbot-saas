@@ -29,6 +29,7 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->brandName(config('app.name'))
+            ->navigationGroups(['Inbox', 'Training', 'Settings'])
             ->colors([
                 'primary' => Color::Blue,
             ])

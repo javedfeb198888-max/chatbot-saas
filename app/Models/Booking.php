@@ -20,6 +20,16 @@ class Booking extends Model
         ];
     }
 
+    public function lead(): BelongsTo
+    {
+        return $this->belongsTo(Lead::class);
+    }
+
+    public function conversation(): BelongsTo
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+
     public function bot(): BelongsTo
     {
         return $this->belongsTo(Bot::class);
