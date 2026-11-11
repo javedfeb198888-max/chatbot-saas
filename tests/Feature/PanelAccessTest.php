@@ -160,6 +160,7 @@ class PanelAccessTest extends TestCase
                 'name' => 'Initech Clinic',
                 'slug' => 'initech',
                 'status' => 'active',
+                'timezone' => 'Asia/Karachi',
                 'monthly_message_limit' => 500,
                 'owner_name' => 'Peter',
                 'owner_email' => 'peter@initech.test',
@@ -171,6 +172,7 @@ class PanelAccessTest extends TestCase
         $owner = User::where('email', 'peter@initech.test')->firstOrFail();
 
         $this->assertSame(500, $client->monthly_message_limit);
+        $this->assertSame('Asia/Karachi', $client->timezone);
         $this->assertSame($client->id, $owner->client_id);
         Notification::assertSentTo($owner, ClientInvite::class);
     }

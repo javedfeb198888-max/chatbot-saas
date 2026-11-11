@@ -22,7 +22,7 @@ class CreateClientWithOwner
      * Creates the client, its owner login and its first bot in one step,
      * then emails the owner an invite.
      *
-     * @param  array{name: string, slug: string, status?: string, monthly_message_limit?: int}  $clientData
+     * @param  array{name: string, slug: string, status?: string, timezone?: string, monthly_message_limit?: int}  $clientData
      */
     public function handle(array $clientData, string $ownerName, string $ownerEmail): Client
     {

@@ -127,6 +127,17 @@ class DashboardTest extends TestCase
             ->assertSee('visitor@acme-customer.test');
     }
 
+    public function test_dashboard_times_are_shown_in_the_clients_time_zone(): void
+    {
+        $this->acme->update(['timezone' => 'Asia/Karachi']);
+        app(CurrentClient::class)->runAs($this->acme, fn () => $this->acmeChat->forceFill(['created_at' => '2026-11-11 05:25:00'])->save());
+
+        // 05:25 UTC is 10:25 in Karachi.
+        $this->actingAs($this->owner->fresh())->get("/app/conversations/{$this->acmeChat->id}")
+            ->assertOk()
+            ->assertSee('11 Nov 2026, 10:25');
+    }
+
     public function test_another_clients_conversation_cannot_be_opened(): void
     {
         $this->actingAs($this->owner)->get("/app/conversations/{$this->globexChat->id}")->assertNotFound();

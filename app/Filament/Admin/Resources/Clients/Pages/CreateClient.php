@@ -15,7 +15,7 @@ class CreateClient extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         return app(CreateClientWithOwner::class)->handle(
-            Arr::only($data, ['name', 'slug', 'status', 'monthly_message_limit']),
+            Arr::only($data, ['name', 'slug', 'status', 'timezone', 'monthly_message_limit']),
             $data['owner_name'],
             $data['owner_email'],
         );

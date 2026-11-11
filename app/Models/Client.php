@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'slug', 'status', 'monthly_message_limit'])]
+#[Fillable(['name', 'slug', 'status', 'timezone', 'monthly_message_limit'])]
 class Client extends Model
 {
     use HasFactory, HasUuids;

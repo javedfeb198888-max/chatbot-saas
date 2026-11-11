@@ -69,6 +69,10 @@ class WidgetController extends Controller
         $conversation = $this->conversation($bot, $data);
 
         return response()->stream(function () use ($responder, $bot, $conversation, $data) {
+            // If the visitor closes the page mid-answer, still finish: the reply is
+            // saved to the conversation and the tokens already spent are counted.
+            ignore_user_abort(true);
+
             $this->send('meta', ['conversation_id' => $conversation->id]);
 
             foreach ($responder->respond($bot, $conversation, trim($data['message'])) as [$event, $payload]) {

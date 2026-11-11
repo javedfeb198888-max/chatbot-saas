@@ -57,6 +57,13 @@ class ClientResource extends Resource
                             ->default('active')
                             ->required()
                             ->native(false),
+                        Select::make('timezone')
+                            ->label('Time zone')
+                            ->helperText('Dates in this client\'s dashboard are shown in this time zone.')
+                            ->options(fn () => array_combine(timezone_identifiers_list(), timezone_identifiers_list()))
+                            ->default('UTC')
+                            ->searchable()
+                            ->required(),
                         TextInput::make('monthly_message_limit')
                             ->label('Monthly message limit')
                             ->numeric()

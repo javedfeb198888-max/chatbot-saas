@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Support\CurrentClient;
 use Closure;
+use Filament\Support\Facades\FilamentTimezone;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,6 +40,9 @@ class SetCurrentClient
         abort_if(! $client->isActive(), 403, 'This client account is suspended.');
 
         $this->currentClient->set($client);
+
+        // Show every date in the dashboard in the client's own time zone.
+        FilamentTimezone::set($client->timezone);
 
         return $next($request);
     }
