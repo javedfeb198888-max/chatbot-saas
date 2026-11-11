@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['bot_id', 'type', 'url', 'title', 'status', 'error', 'content_hash', 'last_synced_at'])]
+#[Fillable(['bot_id', 'parent_id', 'type', 'url', 'title', 'content', 'status', 'error', 'content_hash', 'last_synced_at'])]
 class Source extends Model
 {
     use BelongsToClient;
